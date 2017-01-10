@@ -8562,7 +8562,8 @@ function! s:DB_searchReplaceSavedVariable(str, exp_find_str, exp_get_value, coun
         if inout == '' || s:DB_get('ignore_variable_regex') !~? inout
             " Check if the variable name is preceeded by a comment character.
             " If so, ignore and continue.
-            if strpart(str, 0, (index-1)) !~ '\(--\|\/\/\)\s*$'
+            " \x0 == ^@ == ASCII Null
+            if strpart(str, 0, (index-1)) !~ '\(--\|\/\/\)[^\x0]*$'
                 " Check to see if the variable is part of the temporarily
                 " stored list of variables to ignore
                 if has_key(b:dbext_sqlvar_temp_mv, var)
